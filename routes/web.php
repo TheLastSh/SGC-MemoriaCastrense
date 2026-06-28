@@ -6,6 +6,7 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\VerificacionController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,10 @@ Route::middleware('guest')->group(function () {
 // Autenticados
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Perfil de usuario
+    Route::get('/perfil', [PerfilController::class, 'show'])->name('perfil.show');
+    Route::post('/perfil/favoritos/{articulo}', [PerfilController::class, 'toggleFavorito'])->name('perfil.favoritos.toggle');
 
     // Comentarios en artículos
     Route::post('/archivo/{articulo}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
@@ -63,6 +68,7 @@ Route::middleware('auth')->group(function () {
     // Solo administradores
     Route::middleware('role:administrador')->group(function () {
         Route::get('/verificaciones/pendientes', [VerificacionController::class, 'pendientes'])->name('verificacion.pendientes');
+        Route::get('/verificaciones/pendientes/count', [VerificacionController::class, 'pendientesCount'])->name('verificacion.pendientes.count');
         Route::post('/verificaciones/{solicitud}/aprobar', [VerificacionController::class, 'aprobar'])->name('verificacion.aprobar');
         Route::post('/verificaciones/{solicitud}/rechazar', [VerificacionController::class, 'rechazar'])->name('verificacion.rechazar');
 

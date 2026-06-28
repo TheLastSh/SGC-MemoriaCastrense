@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SolicitudVerificacion;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,6 +45,13 @@ class VerificacionController extends Controller
 
         return redirect()->route('home')
             ->with('success', 'Solicitud enviada. Un administrador la revisará pronto.');
+    }
+
+    public function pendientesCount(): JsonResponse
+    {
+        $count = SolicitudVerificacion::where('status', 'pendiente')->count();
+
+        return response()->json(['count' => $count]);
     }
 
     public function pendientes()

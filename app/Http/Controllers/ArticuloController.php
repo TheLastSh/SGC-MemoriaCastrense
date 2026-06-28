@@ -71,20 +71,39 @@ class ArticuloController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'titulo' => 'required|string|max:255',
             'extracto' => 'nullable|string|max:500',
             'contenido' => 'required|string',
-            'categoria_id' => 'required|exists:categorias,id',
+            'categoria_id' => 'required',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
             'portada' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120',
             'status' => 'required|in:borrador,publicado',
-        ]);
+        ];
+
+        if ($request->categoria_id === 'otro') {
+            $rules['categoria_nueva'] = 'required|string|max:255';
+        } else {
+            $rules['categoria_id'] .= '|exists:categorias,id';
+        }
+
+        $request->validate($rules);
+
+        $categoriaId = $request->categoria_id;
+        if ($categoriaId === 'otro') {
+            $categoria = Categoria::firstOrCreate(
+                ['nombre' => $request->categoria_nueva]
+            );
+            $categoriaId = $categoria->id;
+        }
 
         try {
+            $datos = $request->only(['titulo', 'extracto', 'contenido', 'status']);
+            $datos['categoria_id'] = $categoriaId;
+
             $this->articuloService->publicarArticulo(
-                $request->only(['titulo', 'extracto', 'contenido', 'categoria_id', 'status']),
+                $datos,
                 $request->tags ?? [],
                 $request->file('portada'),
                 Auth::id()
@@ -94,7 +113,9 @@ class ArticuloController extends Controller
                 ? 'Artículo publicado correctamente.'
                 : 'Artículo guardado como borrador.';
 
-            return redirect()->route('articulos.index')->with('success', $msg);
+            $redirect = $request->redirect_to ?? route('articulos.index');
+
+            return redirect($redirect)->with('success', $msg);
         } catch (\Exception $e) {
             return redirect()->back()->withInput()
                 ->withErrors(['error' => $e->getMessage()]);
@@ -119,17 +140,39 @@ class ArticuloController extends Controller
             abort(403);
         }
 
-        $request->validate([
+        $rules = [
             'titulo' => 'required|string|max:255',
             'extracto' => 'nullable|string|max:500',
             'contenido' => 'required|string',
-            'categoria_id' => 'required|exists:categorias,id',
+            'categoria_id' => 'required',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
-            'status' => 'required|in:borrador,revision,publicado',
-        ]);
+            'status' => 'required|in:borrador,publicado',
+        ];
 
-        $articulo->update($request->only(['titulo', 'extracto', 'contenido', 'categoria_id', 'status']));
+        if ($request->categoria_id === 'otro') {
+            $rules['categoria_nueva'] = 'required|string|max:255';
+        } else {
+            $rules['categoria_id'] .= '|exists:categorias,id';
+        }
+
+        $request->validate($rules);
+
+        $categoriaId = $request->categoria_id;
+        if ($categoriaId === 'otro') {
+            $categoria = Categoria::firstOrCreate(
+                ['nombre' => $request->categoria_nueva]
+            );
+            $categoriaId = $categoria->id;
+        }
+
+        $articulo->update([
+            'titulo' => $request->titulo,
+            'extracto' => $request->extracto,
+            'contenido' => $request->contenido,
+            'categoria_id' => $categoriaId,
+            'status' => $request->status,
+        ]);
 
         if ($request->status === 'publicado' && ! $articulo->fecha_publicacion) {
             $articulo->update(['fecha_publicacion' => now()]);
@@ -137,7 +180,9 @@ class ArticuloController extends Controller
 
         $articulo->tags()->sync($request->tags ?? []);
 
-        return redirect()->route('articulos.show', $articulo)
+        $redirect = $request->redirect_to ?? route('articulos.show', $articulo);
+
+        return redirect($redirect)
             ->with('success', 'Artículo actualizado correctamente.');
     }
 

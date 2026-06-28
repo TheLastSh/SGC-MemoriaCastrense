@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -89,5 +90,15 @@ class User extends Authenticatable
     public function solicitudVerificacion()
     {
         return $this->hasOne(SolicitudVerificacion::class, 'user_id');
+    }
+
+    public function favoritos(): BelongsToMany
+    {
+        return $this->belongsToMany(Articulo::class, 'favoritos')->withTimestamps();
+    }
+
+    public function hasFavorito(Articulo $articulo): bool
+    {
+        return $this->favoritos()->where('articulo_id', $articulo->id)->exists();
     }
 }
