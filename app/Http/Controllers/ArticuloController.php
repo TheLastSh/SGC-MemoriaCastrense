@@ -1,0 +1,155 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Articulo;
+use App\Models\Categoria;
+use App\Models\Tag;
+use App\Services\ArticuloService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class ArticuloController extends Controller
+{
+    protected $articuloService;
+
+    public function __construct(ArticuloService $articuloService)
+    {
+        $this->articuloService = $articuloService;
+    }
+
+    public function index(Request $request)
+    {
+        $query = Articulo::with(['categoria', 'autor'])
+            ->where('status', 'publicado');
+
+        if ($request->has('buscar')) {
+            $termino = '%'.$request->buscar.'%';
+            $query->where(function ($q) use ($termino) {
+                $q->where('titulo', 'LIKE', $termino)
+                    ->orWhere('extracto', 'LIKE', $termino)
+                    ->orWhere('contenido', 'LIKE', $termino);
+            });
+        }
+
+        if ($request->has('categoria')) {
+            $query->where('categoria_id', $request->categoria);
+        }
+
+        if ($request->has('tag')) {
+            $query->whereHas('tags', fn ($q) => $q->where('tags.id', $request->tag));
+        }
+
+        $articulos = $query->orderBy('fecha_publicacion', 'desc')
+            ->paginate(12);
+
+        $categorias = Categoria::all();
+        $tags = Tag::all();
+
+        return view('articulos.index', compact('articulos', 'categorias', 'tags'));
+    }
+
+    public function show(Articulo $articulo)
+    {
+        if ($articulo->status !== 'publicado' && $articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
+            abort(404);
+        }
+
+        $articulo->load(['categoria', 'autor', 'tags', 'comentarios.user']);
+        $articulo->increment('visitas');
+
+        return view('articulos.show', compact('articulo'));
+    }
+
+    public function create()
+    {
+        $categorias = Categoria::all();
+        $tags = Tag::all();
+
+        return view('articulos.create', compact('categorias', 'tags'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'extracto' => 'nullable|string|max:500',
+            'contenido' => 'required|string',
+            'categoria_id' => 'required|exists:categorias,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'portada' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120',
+            'status' => 'required|in:borrador,publicado',
+        ]);
+
+        try {
+            $this->articuloService->publicarArticulo(
+                $request->only(['titulo', 'extracto', 'contenido', 'categoria_id', 'status']),
+                $request->tags ?? [],
+                $request->file('portada'),
+                Auth::id()
+            );
+
+            $msg = $request->status === 'publicado'
+                ? 'Artículo publicado correctamente.'
+                : 'Artículo guardado como borrador.';
+
+            return redirect()->route('articulos.index')->with('success', $msg);
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()
+                ->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function edit(Articulo $articulo)
+    {
+        if ($articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
+            abort(403);
+        }
+
+        $categorias = Categoria::all();
+        $tags = Tag::all();
+
+        return view('articulos.edit', compact('articulo', 'categorias', 'tags'));
+    }
+
+    public function update(Request $request, Articulo $articulo)
+    {
+        if ($articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'extracto' => 'nullable|string|max:500',
+            'contenido' => 'required|string',
+            'categoria_id' => 'required|exists:categorias,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'status' => 'required|in:borrador,revision,publicado',
+        ]);
+
+        $articulo->update($request->only(['titulo', 'extracto', 'contenido', 'categoria_id', 'status']));
+
+        if ($request->status === 'publicado' && ! $articulo->fecha_publicacion) {
+            $articulo->update(['fecha_publicacion' => now()]);
+        }
+
+        $articulo->tags()->sync($request->tags ?? []);
+
+        return redirect()->route('articulos.show', $articulo)
+            ->with('success', 'Artículo actualizado correctamente.');
+    }
+
+    public function destroy(Articulo $articulo)
+    {
+        if ($articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
+            abort(403);
+        }
+
+        $articulo->delete();
+
+        return redirect()->route('articulos.index')
+            ->with('success', 'Artículo archivado.');
+    }
+}
