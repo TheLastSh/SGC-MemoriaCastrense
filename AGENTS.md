@@ -56,6 +56,8 @@ php artisan serve               # http://localhost:8000
 
 ### Autenticadas (auth)
 | POST | `/logout` | `logout` | AuthController@logout |
+| GET | `/perfil` | `perfil.show` | PerfilController@show |
+| POST | `/perfil/favoritos/{articulo}` | `perfil.favoritos.toggle` | PerfilController@toggleFavorito |
 | POST | `/archivo/{articulo}/comentarios` | `comentarios.store` | ComentarioController@store |
 | DELETE | `/comentarios/{comentario}` | `comentarios.destroy` | ComentarioController@destroy |
 | GET/POST | `/foro/{categoria}/nuevo-hilo` | `foro.create-hilo` / `foro.store-hilo` | ForoController |
@@ -83,12 +85,14 @@ User (role, tipo_verificado, biografia)
  ├── autor_id ── Hilo (HasMany)
  ├── autor_id ── Respuesta (HasMany)
  ├── user_id ── Comentario (HasMany)
- └── user_id ── SolicitudVerificacion (HasOne)
+ ├── user_id ── SolicitudVerificacion (HasOne)
+ └── favoritos ── Articulo (BelongsToMany via pivot `favoritos`)
 
 Articulo (SoftDeletes, slug)
  ├── belongsTo: User (autor), Categoria (categoria_id)
  ├── belongsToMany: Tag (pivot articulo_tag)
- └── hasMany: Comentario (articulo_id)
+ ├── hasMany: Comentario (articulo_id)
+ └── favoritadoPor ── User (BelongsToMany via pivot `favoritos`)
 
 Categoria (categorias) ── hasMany: Articulo
 
@@ -121,7 +125,8 @@ Comentario (articulo_id, user_id)
 - **Testing DB**: SQLite in-memory en `phpunit.xml` (ya activo)
 - **No form requests**: validación inline en controladores
 - **Fonts**: Inter + Merriweather via Google Fonts
-- **Frontend**: Tailwind CSS 3, sin framework JS
+- **Frontend**: Tailwind CSS 3, Alpine.js 3.14 para interactividad en perfil (tabs vía CDN)
+- **Perfil y Favoritos**: `PerfilController` con Alpine.js tabs (Favoritos, Mis Artículos, Comentarios, Verificación). Pivot table `favoritos` con unique(user_id, articulo_id). Botón toggle con fetch + actualización dinámica del DOM
 
 ## Tests (12 tests, 22 assertions)
 

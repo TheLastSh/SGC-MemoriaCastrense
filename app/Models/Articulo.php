@@ -60,4 +60,9 @@ class Articulo extends Model
     {
         return $this->hasMany(Comentario::class, 'articulo_id');
     }
+
+    public function favoritadoPor(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favoritos')->withTimestamps();
+    }
 }

@@ -2,11 +2,11 @@
 @section('title', 'Solicitudes Pendientes')
 
 @section('content')
-    <h1 class="text-3xl font-merriweather font-bold text-navy-900 mb-8">Solicitudes de Verificación Pendientes</h1>
+    <h1 class="text-heading text-navy-900 mb-8">Solicitudes de Verificación Pendientes</h1>
 
     <div class="space-y-4">
         @forelse($solicitudes as $solicitud)
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6">
                 <div class="flex justify-between items-start">
                     <div>
                         <h2 class="font-semibold text-navy-900 text-lg">{{ $solicitud->usuario->name }}</h2>
@@ -19,16 +19,16 @@
                     <div class="flex gap-2">
                         <form action="{{ route('verificacion.aprobar', $solicitud) }}" method="POST">
                             @csrf
-                            <button type="submit" class="bg-green-50 hover:bg-green-100 text-green-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">Aprobar</button>
+                            <button type="submit" class="bg-green-50/80 hover:bg-green-100 active:scale-[0.97] text-green-600 px-4 py-2 rounded-md text-sm font-medium transition-all">Aprobar</button>
                         </form>
                         <form action="{{ route('verificacion.rechazar', $solicitud) }}" method="POST" onsubmit="return confirm('¿Rechazar esta solicitud?')">
                             @csrf
-                            <input type="text" name="motivo" placeholder="Motivo del rechazo" required class="border border-gray-300 rounded px-2 py-1 text-sm">
-                            <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">Rechazar</button>
+                            <input type="text" name="motivo" placeholder="Motivo del rechazo" required class="border border-parchment-200/50 bg-white/80 rounded px-2 py-1 text-sm">
+                            <button type="submit" class="bg-red-50/80 hover:bg-red-100 active:scale-[0.97] text-red-600 px-4 py-2 rounded-md text-sm font-medium transition-all">Rechazar</button>
                         </form>
                     </div>
                 </div>
-                <div class="mt-4 bg-gray-50 rounded p-4">
+                <div class="mt-4 bg-navy-800/5 rounded p-4">
                     <p class="text-sm font-medium text-navy-900">Reseña Curricular:</p>
                     <p class="text-sm text-gray-700 mt-1 whitespace-pre-line">{{ $solicitud->resena_curricular }}</p>
                     @if($solicitud->documento_path)
@@ -37,7 +37,7 @@
                 </div>
             </div>
         @empty
-            <div class="text-center py-16 text-gray-500">
+            <div class="text-center py-16 text-gray-500 bg-white/60 backdrop-blur-sm rounded-xl">
                 <p>No hay solicitudes pendientes.</p>
             </div>
         @endforelse
