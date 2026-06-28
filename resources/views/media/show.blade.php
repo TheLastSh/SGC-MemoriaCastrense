@@ -5,15 +5,15 @@
     <div class="max-w-4xl mx-auto">
         <a href="{{ route('media.index') }}" class="text-sm text-gray-500 hover:text-gold-600 mb-4 inline-block">← Volver a la Biblioteca</a>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 overflow-hidden">
             @if(str_starts_with($media->mime_type, 'image/'))
-                <img src="{{ $media->filename }}" alt="{{ $media->alt_text ?? $media->nombre_original }}" class="w-full max-h-[70vh] object-contain bg-gray-100">
+                <img src="{{ $media->filename }}" alt="{{ $media->alt_text ?? $media->nombre_original }}" class="w-full max-h-[70vh] object-contain bg-navy-800/10">
             @elseif(str_starts_with($media->mime_type, 'video/'))
                 <video controls class="w-full max-h-[70vh] bg-black">
                     <source src="{{ $media->filename }}" type="{{ $media->mime_type }}">
                 </video>
             @else
-                <div class="flex items-center justify-center h-64 bg-navy-50">
+                <div class="flex items-center justify-center h-64 bg-navy-800/10">
                     <div class="text-center">
                         <svg class="w-16 h-16 text-navy-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
                         <a href="{{ $media->filename }}" target="_blank" class="text-gold-600 hover:underline font-medium">Descargar {{ $media->nombre_original }}</a>
@@ -22,7 +22,7 @@
             @endif
 
             <div class="p-6">
-                <h1 class="text-2xl font-merriweather font-bold text-navy-900">{{ $media->nombre_original }}</h1>
+                <h1 class="text-2xl font-display font-bold text-navy-900">{{ $media->nombre_original }}</h1>
                 @if($media->alt_text)
                     <p class="text-gray-500 mt-1">{{ $media->alt_text }}</p>
                 @endif

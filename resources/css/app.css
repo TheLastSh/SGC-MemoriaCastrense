@@ -1,3 +1,143 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ─── Background dot-grid pattern ──────────────────────────── */
+body {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='%230f172a' fill-opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ─── Scroll reveal ────────────────────────────────────────── */
+@layer utilities {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  [data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Stagger children ─────────────────────────────────────── */
+.stagger-children > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.stagger-children.revealed > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-children.revealed > *:nth-child(2) { transition-delay: 80ms; }
+.stagger-children.revealed > *:nth-child(3) { transition-delay: 160ms; }
+.stagger-children.revealed > *:nth-child(4) { transition-delay: 240ms; }
+.stagger-children.revealed > *:nth-child(5) { transition-delay: 320ms; }
+.stagger-children.revealed > *:nth-child(6) { transition-delay: 400ms; }
+.stagger-children.revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ─── Navbar gradient bottom border ────────────────────────── */
+nav.sticky::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(202, 138, 4, 0.25), rgba(20, 184, 166, 0.25), transparent);
+}
+
+/* ─── Navbar scroll effect ─────────────────────────────────── */
+nav.sticky:not(.scrolled) {
+    background-color: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    box-shadow: none !important;
+}
+nav.sticky.scrolled {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ─── Input focus — teal accent ────────────────────────────── */
+input:where([type="text"], [type="email"], [type="password"], [type="url"], [type="search"], [type="number"]),
+textarea,
+select {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+input:where([type="text"], [type="email"], [type="password"], [type="url"], [type="search"], [type="number"]):hover,
+textarea:hover,
+select:hover {
+    border-color: rgba(20, 184, 166, 0.5) !important;
+}
+input:where([type="text"], [type="email"], [type="password"], [type="url"], [type="search"], [type="number"]):focus,
+textarea:focus,
+select:focus {
+    border-color: #14b8a6 !important;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    outline: none !important;
+}
+input[type="file"] {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input[type="file"]:hover {
+    border-color: rgba(20, 184, 166, 0.5) !important;
+}
+input[type="file"]:focus-within {
+    border-color: #14b8a6 !important;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
+    outline: none !important;
+}
+
+/* ─── Input icon wrapper — icon changes color with field focus ── */
+.input-icon-wrapper:focus-within svg {
+    color: #14b8a6 !important;
+}
+
+/* ─── Card accent borders ──────────────────────────────────── */
+.card-accent-gold {
+    border-top: 4px solid #ca8a04;
+}
+.card-accent-teal {
+    border-top: 4px solid #14b8a6;
+}
+
+/* ─── Section decorative divider ───────────────────────────── */
+.section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0;
+}
+.section-divider::before,
+.section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(202, 138, 4, 0.3), transparent);
+}
+.section-divider svg {
+    flex-shrink: 0;
+}
+
+/* ─── Hero topographic overlay ──────────────────────────────── */
+.hero-topo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 30 Q 30 10 50 30 T 10 30' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3Cpath d='M0 40 Q 30 20 60 40 T 0 40' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3Cpath d='M20 20 Q 30 30 40 20 T 20 20' fill='none' stroke='%23ffffff' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 120px 120px;
+}
+
+/* ─── Gradient text ────────────────────────────────────────── */
+.text-gradient-gold {
+    background: linear-gradient(135deg, #facc15, #ca8a04);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
