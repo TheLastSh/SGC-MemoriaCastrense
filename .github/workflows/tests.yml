@@ -10,13 +10,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-    services:
-      sqlite:
-        image: nouchka/sqlite3:latest
-        options: >-
-          --entrypoint sh
-          -c 'sqlite3 /tmp/db.sqlite "SELECT 1;" && tail -f /dev/null'
-
     steps:
       - uses: actions/checkout@v3
 
