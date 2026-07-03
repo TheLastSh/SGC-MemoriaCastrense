@@ -3,18 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function showLogin()
+    /**
+     * Muestra el formulario de inicio de sesión.
+     */
+    public function showLogin(): View
     {
         return view('auth.login');
     }
 
-    public function login(Request $request)
+    /**
+     * Procesa el inicio de sesión.
+     */
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -32,12 +40,18 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    public function showRegister()
+    /**
+     * Muestra el formulario de registro.
+     */
+    public function showRegister(): View
     {
         return view('auth.register');
     }
 
-    public function register(Request $request)
+    /**
+     * Procesa el registro de un nuevo usuario.
+     */
+    public function register(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -49,7 +63,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'usuario', // Rol por defecto
+            'role' => 'usuario',
         ]);
 
         Auth::login($user);
@@ -57,7 +71,10 @@ class AuthController extends Controller
         return redirect()->route('articulos.index')->with('success', 'Cuenta creada exitosamente. Bienvenido.');
     }
 
-    public function logout(Request $request)
+    /**
+     * Cierra la sesión del usuario.
+     */
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 

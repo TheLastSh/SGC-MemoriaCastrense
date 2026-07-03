@@ -183,4 +183,19 @@ flowchart LR
 ```
 
 ---
+
+## 📖 Documentación Técnica (Doc-as-Code)
+
+La documentación de clases (PHPDoc) se genera automáticamente con **phpDocumentor**:
+
+```bash
+# Generar documentación (salida en public/docs/)
+composer docs
+
+# Servir la documentación localmente
+php -S localhost:8000 -t public/docs
+```
+
+Todas las clases en `app/Http/Controllers/`, `app/Models/` y `app/Services/` incluyen PHPDoc completo.
+
 > Proyecto académico desarrollado para la materia Implantación de Sistemas (2026). Equipo: Eduardo Rojas & Ernesto Polanco.

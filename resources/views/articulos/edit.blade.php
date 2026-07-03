@@ -2,7 +2,7 @@
 @section('title', 'Editar: ' . $articulo->titulo)
 
 @section('content')
-    <div class="max-w-4xl mx-auto" x-data="articuloForm()">
+    <div class="max-w-4xl mx-auto" x-data="articuloForm()" @click.window="handleGlobalClick($event)">
         <h1 class="text-heading text-navy-900 mb-8">Editar Artículo</h1>
 
         <form action="{{ route('articulos.update', $articulo) }}" method="POST" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-8 card-accent-gold" x-ref="form">
@@ -106,6 +106,16 @@ function articuloForm() {
             this.$refs.form.appendChild(input);
             this.$refs.form.submit();
         },
+        handleGlobalClick(ev) {
+            if (!this.dirty || ev.defaultPrevented) return;
+            const link = ev.target.closest('a');
+            if (!link) return;
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('javascript') || href === '') return;
+            ev.preventDefault();
+            this.pendingHref = href;
+            this.showExitModal = true;
+        },
         init() {
             window.addEventListener('beforeunload', (ev) => {
                 if (this.dirty) {
@@ -113,17 +123,6 @@ function articuloForm() {
                     ev.returnValue = '';
                 }
             });
-            document.addEventListener('click', (ev) => {
-                if (!this.dirty) return;
-                const link = ev.target.closest('a');
-                if (!link) return;
-                if (link.closest('[x-data]') || link.closest('.fixed')) return;
-                const href = link.getAttribute('href');
-                if (!href || href.startsWith('#') || href.startsWith('javascript') || href === '') return;
-                ev.preventDefault();
-                this.pendingHref = href;
-                this.showExitModal = true;
-            }, true);
         }
     };
 }
