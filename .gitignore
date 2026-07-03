@@ -28,6 +28,10 @@ yarn-error.log
 /composer.phar
 /contexto_sgc.txt
 /.txt
+/phpDocumentor.phar
+
+# phpDocumentor cache
+/.phpdoc
 
 # Documentación generada
 /public/docs
