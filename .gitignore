@@ -33,5 +33,8 @@ yarn-error.log
 # phpDocumentor cache
 /.phpdoc
 
+# Documentación del proyecto
+/docs
+
 # Documentación generada
 /public/docs
