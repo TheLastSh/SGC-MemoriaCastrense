@@ -6,8 +6,10 @@ use App\Models\Articulo;
 use App\Models\Categoria;
 use App\Models\Tag;
 use App\Services\ArticuloService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ArticuloController extends Controller
 {
@@ -18,7 +20,10 @@ class ArticuloController extends Controller
         $this->articuloService = $articuloService;
     }
 
-    public function index(Request $request)
+    /**
+     * Muestra el catálogo público de artículos con filtros.
+     */
+    public function index(Request $request): View
     {
         $query = Articulo::with(['categoria', 'autor'])
             ->where('status', 'publicado');
@@ -49,7 +54,10 @@ class ArticuloController extends Controller
         return view('articulos.index', compact('articulos', 'categorias', 'tags'));
     }
 
-    public function show(Articulo $articulo)
+    /**
+     * Muestra un artículo individual.
+     */
+    public function show(Articulo $articulo): View
     {
         if ($articulo->status !== 'publicado' && $articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
             abort(404);
@@ -61,7 +69,10 @@ class ArticuloController extends Controller
         return view('articulos.show', compact('articulo'));
     }
 
-    public function create()
+    /**
+     * Muestra el formulario de creación de artículos.
+     */
+    public function create(): View
     {
         $categorias = Categoria::all();
         $tags = Tag::all();
@@ -69,7 +80,10 @@ class ArticuloController extends Controller
         return view('articulos.create', compact('categorias', 'tags'));
     }
 
-    public function store(Request $request)
+    /**
+     * Almacena un nuevo artículo.
+     */
+    public function store(Request $request): RedirectResponse
     {
         $rules = [
             'titulo' => 'required|string|max:255',
@@ -122,7 +136,10 @@ class ArticuloController extends Controller
         }
     }
 
-    public function edit(Articulo $articulo)
+    /**
+     * Muestra el formulario de edición de un artículo.
+     */
+    public function edit(Articulo $articulo): View
     {
         if ($articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
             abort(403);
@@ -134,7 +151,10 @@ class ArticuloController extends Controller
         return view('articulos.edit', compact('articulo', 'categorias', 'tags'));
     }
 
-    public function update(Request $request, Articulo $articulo)
+    /**
+     * Actualiza un artículo existente.
+     */
+    public function update(Request $request, Articulo $articulo): RedirectResponse
     {
         if ($articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
             abort(403);
@@ -186,7 +206,10 @@ class ArticuloController extends Controller
             ->with('success', 'Artículo actualizado correctamente.');
     }
 
-    public function destroy(Articulo $articulo)
+    /**
+     * Elimina un artículo (soft delete).
+     */
+    public function destroy(Articulo $articulo): RedirectResponse
     {
         if ($articulo->author_id !== Auth::id() && ! Auth::user()?->isAdmin()) {
             abort(403);

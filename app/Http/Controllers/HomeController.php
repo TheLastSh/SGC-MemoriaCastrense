@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Articulo;
 use App\Models\Hilo;
 use App\Models\Media;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function index()
+    /**
+     * Muestra la página principal con artículos recientes, destacados y estadísticas.
+     */
+    public function index(): View
     {
         $recientes = Articulo::with('categoria')
             ->where('status', 'publicado')

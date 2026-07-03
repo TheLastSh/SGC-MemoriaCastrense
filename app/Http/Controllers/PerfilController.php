@@ -10,6 +10,9 @@ use Illuminate\View\View;
 
 class PerfilController extends Controller
 {
+    /**
+     * Muestra el perfil del usuario autenticado con sus datos y estadísticas.
+     */
     public function show(): View
     {
         $user = Auth::user()->load([
@@ -32,6 +35,9 @@ class PerfilController extends Controller
         return view('perfil.show', compact('user', 'stats', 'pendientesCount'));
     }
 
+    /**
+     * Agrega o quita un artículo de los favoritos del usuario.
+     */
     public function toggleFavorito(Articulo $articulo): JsonResponse
     {
         $user = Auth::user();

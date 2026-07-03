@@ -4,23 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\SolicitudVerificacion;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class VerificacionController extends Controller
 {
-    public function solicitar()
+    /**
+     * Muestra el formulario de solicitud de verificación.
+     */
+    public function solicitar(): View|RedirectResponse
     {
-        if (Auth::user()->solicitudVerificacion) {
+        $user = Auth::user();
+
+        if ($user->solicitudVerificacion) {
             return redirect()->back()->withErrors(['error' => 'Ya tienes una solicitud de verificación.']);
         }
 
         return view('verificacion.solicitar');
     }
 
-    public function store(Request $request)
+    /**
+     * Procesa y almacena una nueva solicitud de verificación.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        if (Auth::user()->solicitudVerificacion) {
+        $user = Auth::user();
+
+        if ($user->solicitudVerificacion) {
             return redirect()->back()->withErrors(['error' => 'Ya tienes una solicitud activa.']);
         }
 
@@ -30,23 +43,33 @@ class VerificacionController extends Controller
             'documento' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
         ]);
 
-        $documentoPath = null;
-        if ($request->hasFile('documento')) {
-            $documentoPath = $request->file('documento')
-                ->store('verificaciones/'.Auth::id(), 'public');
+        try {
+            $documentoPath = null;
+            if ($request->hasFile('documento')) {
+                $documentoPath = $request->file('documento')
+                    ->store('verificaciones/'.Auth::id(), 'public');
+            }
+
+            SolicitudVerificacion::create([
+                'user_id' => Auth::id(),
+                'tipo' => $request->tipo,
+                'documento_path' => $documentoPath,
+                'resena_curricular' => $request->resena_curricular,
+            ]);
+
+            return redirect()->route('home')
+                ->with('success', 'Solicitud enviada. Un administrador la revisará pronto.');
+        } catch (\Exception $e) {
+            Log::error('[ERROR] Error al crear solicitud de verificación: '.$e->getMessage());
+
+            return redirect()->back()->withInput()
+                ->withErrors(['error' => 'Error interno al enviar la solicitud.']);
         }
-
-        SolicitudVerificacion::create([
-            'user_id' => Auth::id(),
-            'tipo' => $request->tipo,
-            'documento_path' => $documentoPath,
-            'resena_curricular' => $request->resena_curricular,
-        ]);
-
-        return redirect()->route('home')
-            ->with('success', 'Solicitud enviada. Un administrador la revisará pronto.');
     }
 
+    /**
+     * Retorna el conteo de solicitudes pendientes (para el badge en vivo).
+     */
     public function pendientesCount(): JsonResponse
     {
         $count = SolicitudVerificacion::where('status', 'pendiente')->count();
@@ -54,7 +77,10 @@ class VerificacionController extends Controller
         return response()->json(['count' => $count]);
     }
 
-    public function pendientes()
+    /**
+     * Muestra la lista de solicitudes de verificación pendientes.
+     */
+    public function pendientes(): View
     {
         $solicitudes = SolicitudVerificacion::with('usuario')
             ->where('status', 'pendiente')
@@ -64,34 +90,54 @@ class VerificacionController extends Controller
         return view('verificacion.pendientes', compact('solicitudes'));
     }
 
-    public function aprobar(SolicitudVerificacion $solicitud)
+    /**
+     * Aprueba una solicitud de verificación y actualiza el rol del usuario.
+     */
+    public function aprobar(SolicitudVerificacion $solicitud): RedirectResponse
     {
-        $solicitud->update([
-            'status' => 'aprobado',
-            'revisado_por' => Auth::id(),
-            'fecha_verificacion' => now(),
-        ]);
+        try {
+            $solicitud->update([
+                'status' => 'aprobado',
+                'revisado_por' => Auth::id(),
+                'fecha_verificacion' => now(),
+            ]);
 
-        $solicitud->usuario->update([
-            'role' => 'publicador',
-            'tipo_verificado' => $solicitud->tipo,
-        ]);
+            $solicitud->usuario->update([
+                'role' => 'publicador',
+                'tipo_verificado' => $solicitud->tipo,
+            ]);
 
-        return redirect()->route('verificacion.pendientes')
-            ->with('success', 'Usuario verificado como '.$solicitud->tipo.'.');
+            return redirect()->route('verificacion.pendientes')
+                ->with('success', 'Usuario verificado como '.$solicitud->tipo.'.');
+        } catch (\Exception $e) {
+            Log::error('[ERROR] Error al aprobar solicitud: '.$e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error interno al aprobar la solicitud.']);
+        }
     }
 
-    public function rechazar(Request $request, SolicitudVerificacion $solicitud)
+    /**
+     * Rechaza una solicitud de verificación con un motivo.
+     */
+    public function rechazar(Request $request, SolicitudVerificacion $solicitud): RedirectResponse
     {
         $request->validate(['motivo' => 'required|string|max:500']);
 
-        $solicitud->update([
-            'status' => 'rechazado',
-            'revisado_por' => Auth::id(),
-            'motivo_rechazo' => $request->motivo,
-        ]);
+        try {
+            $solicitud->update([
+                'status' => 'rechazado',
+                'revisado_por' => Auth::id(),
+                'motivo_rechazo' => $request->motivo,
+            ]);
 
-        return redirect()->route('verificacion.pendientes')
-            ->with('success', 'Solicitud rechazada.');
+            return redirect()->route('verificacion.pendientes')
+                ->with('success', 'Solicitud rechazada.');
+        } catch (\Exception $e) {
+            Log::error('[ERROR] Error al rechazar solicitud: '.$e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error interno al rechazar la solicitud.']);
+        }
     }
 }

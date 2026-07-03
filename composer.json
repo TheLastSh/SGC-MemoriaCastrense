@@ -46,6 +46,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "docs": [
+            "@php phpDocumentor.phar -c phpdoc.xml"
         ]
     },
     "extra": {
@@ -60,6 +63,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "audit": {
+            "ignore": ["PKSA-pwh8-d4fr-nywn"]
         }
     },
     "minimum-stability": "stable",
