@@ -10,8 +10,21 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Servicio encargado de la lógica de negocio para artículos y medios.
+ */
 class ArticuloService
 {
+    /**
+     * Publica o guarda como borrador un artículo con transacción y manejo de adjuntos.
+     *
+     * @param  array  $datos  Datos validados del artículo
+     * @param  array  $tags  IDs de tags a asociar
+     * @param  UploadedFile|null  $portada  Archivo de portada opcional
+     * @param  int  $userId  ID del autor
+     *
+     * @throws Exception
+     */
     public function publicarArticulo(array $datos, array $tags, ?UploadedFile $portada, int $userId): Articulo
     {
         $portadaUrl = null;
@@ -44,11 +57,18 @@ class ArticuloService
             if ($portadaUrl && Storage::disk('public')->exists($portadaUrl)) {
                 Storage::disk('public')->delete($portadaUrl);
             }
-            Log::error('Error al crear articulo', ['error' => $e->getMessage()]);
+            Log::error('[ERROR] Error al crear articulo: '.$e->getMessage());
             throw new Exception('Error interno al publicar el articulo.');
         }
     }
 
+    /**
+     * Sube un archivo a la biblioteca de medios y registra sus metadatos.
+     *
+     * @param  array  $datos  Datos del archivo (colección, alt_text, descripción)
+     * @param  UploadedFile  $archivo  Archivo a subir
+     * @param  int  $userId  ID del usuario que sube
+     */
     public function subirMedia(array $datos, UploadedFile $archivo, int $userId): Media
     {
         $coleccion = $datos['coleccion'] ?? 'documento';

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use App\Services\ArticuloService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class MediaController extends Controller
 {
@@ -16,7 +19,10 @@ class MediaController extends Controller
         $this->articuloService = $articuloService;
     }
 
-    public function index(Request $request)
+    /**
+     * Muestra la biblioteca de medios con filtros.
+     */
+    public function index(Request $request): View
     {
         $query = Media::with('subidor');
 
@@ -43,12 +49,18 @@ class MediaController extends Controller
         return view('media.index', compact('media'));
     }
 
-    public function create()
+    /**
+     * Muestra el formulario de subida de medios.
+     */
+    public function create(): View
     {
         return view('media.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Almacena un nuevo archivo en la biblioteca de medios.
+     */
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'archivo' => 'required|file|max:25600',
@@ -57,32 +69,52 @@ class MediaController extends Controller
             'descripcion' => 'nullable|string|max:1000',
         ]);
 
-        $media = $this->articuloService->subirMedia(
-            $request->only(['coleccion', 'alt_text', 'descripcion']),
-            $request->file('archivo'),
-            Auth::id()
-        );
+        try {
+            $media = $this->articuloService->subirMedia(
+                $request->only(['coleccion', 'alt_text', 'descripcion']),
+                $request->file('archivo'),
+                Auth::id()
+            );
 
-        return redirect()->route('media.show', $media)
-            ->with('success', 'Archivo subido a la biblioteca.');
+            return redirect()->route('media.show', $media)
+                ->with('success', 'Archivo subido a la biblioteca.');
+        } catch (\Exception $e) {
+            Log::error('[ERROR] Error al subir archivo: '.$e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error interno al subir el archivo.']);
+        }
     }
 
-    public function show(Media $media)
+    /**
+     * Muestra un archivo de la biblioteca.
+     */
+    public function show(Media $media): View
     {
         $media->load('subidor');
 
         return view('media.show', compact('media'));
     }
 
-    public function destroy(Media $media)
+    /**
+     * Elimina un archivo de la biblioteca.
+     */
+    public function destroy(Media $media): RedirectResponse
     {
         if (! Auth::user()?->isAdmin()) {
             abort(403);
         }
 
-        $media->delete();
+        try {
+            $media->delete();
 
-        return redirect()->route('media.index')
-            ->with('success', 'Archivo eliminado de la biblioteca.');
+            return redirect()->route('media.index')
+                ->with('success', 'Archivo eliminado de la biblioteca.');
+        } catch (\Exception $e) {
+            Log::error('[ERROR] Error al eliminar archivo: '.$e->getMessage());
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error interno al eliminar el archivo.']);
+        }
     }
 }

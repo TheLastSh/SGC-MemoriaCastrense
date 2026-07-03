@@ -7,8 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
+/**
+ * @property int $id
+ * @property string $titulo
+ * @property string $slug
+ * @property string $contenido_inicial
+ * @property int $autor_id
+ * @property int $categoria_id
+ * @property string $status
+ * @property bool $fijado
+ * @property int|null $ultima_respuesta_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ */
 class Hilo extends Model
 {
     use HasFactory, SoftDeletes;

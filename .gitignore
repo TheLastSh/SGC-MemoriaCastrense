@@ -21,3 +21,13 @@ yarn-error.log
 # Bases de datos locales
 /database/*.sqlite
 /database/*.sqlite-journal
+
+# Entorno local de desarrollo
+/.opencode
+/AGENTS.md
+/composer.phar
+/contexto_sgc.txt
+/.txt
+
+# Documentación generada
+/public/docs

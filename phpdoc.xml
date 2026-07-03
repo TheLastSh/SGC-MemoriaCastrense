@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+    xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+>
+    <title>SGC Memoria Castrense</title>
+    <paths>
+        <output>public/docs</output>
+    </paths>
+    <version number="latest">
+        <api>
+            <source dsn=".">
+                <path>app/Http/Controllers</path>
+                <path>app/Models</path>
+                <path>app/Services</path>
+            </source>
+        </api>
+    </version>
+</phpdocumentor>
