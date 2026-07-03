@@ -4,7 +4,7 @@ El **SGC Memoria Castrense** es una plataforma web institucional orientada a la 
 
 El proyecto garantiza la **Paridad de Entornos**, utiliza **Arquitectura Monolítica** en Laravel (PHP) con motor **PostgreSQL/SQLite** e implementa **Integración Continua (CI/CD)**. Todo el desarrollo se rige bajo estrictas políticas de [CONTRIBUTING.md](CONTRIBUTING.md).
 
-> **Nota sobre Gestión de Proyecto:** El Plan de Acción detallado (Diagrama de Gantt y Sprints) se gestiona de forma activa en nuestro entorno de **Notion / ClickUp** [Enlace al Tablero de Gestión].
+> **Nota sobre Gestión de Proyecto:** El Plan de Acción detallado (Diagrama de Gantt y Sprints) se gestiona de forma activa en nuestro [Tablero de Notion](https://app.notion.com/p/Sistema-Gestor-de-Contenido-3922c23f08af80428d92d02acb104d20?source=copy_link).
 
 ---
 
