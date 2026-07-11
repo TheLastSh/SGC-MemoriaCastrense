@@ -49,6 +49,12 @@
         ],
         "docs": [
             "@php phpDocumentor.phar -c phpdoc.xml"
+        ],
+        "build:prod": [
+            "@php artisan optimize",
+            "@php artisan view:cache",
+            "@php artisan config:cache",
+            "@php artisan route:cache"
         ]
     },
     "extra": {

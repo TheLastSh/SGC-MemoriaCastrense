@@ -264,6 +264,54 @@ flowchart LR
 
 ---
 
+## 🚀 Producción
+
+El sistema se despliega automáticamente en **[Render](https://render.com)** vía GitHub Actions.
+
+| Recurso | URL |
+|---------|-----|
+| Producción | *pendiente — se asigna tras el primer deploy* |
+| Health Check | `/health` |
+| Repositorio | [SGC-MemoriaCastrense](https://github.com/TheLastSh/SGC-MemoriaCastrense) |
+
+### Health Endpoint
+
+```bash
+curl https://<app>.onrender.com/health
+```
+
+Respuesta:
+
+```json
+{
+  "status": "ok",
+  "application": "SGC Memoria Castrense",
+  "timestamp": "2026-07-11T00:00:00Z",
+  "checks": {
+    "database": { "status": "ok", "latency_ms": 5 },
+    "storage": { "status": "ok", "disk_free_mb": 1024, "writable": true },
+    "memory": { "status": "ok", "usage_mb": 16, "limit": "128M" }
+  }
+}
+```
+
+### Pipeline CI/CD
+
+- **CI** (cada push/PR a `main`/`develop`): Pint linting + PHPUnit tests (SQLite in-memory)
+- **CD** (push a `main` tras PR merge): Build Docker + deploy automático a Render vía Deploy Hook
+
+### Variables de Entorno Requeridas
+
+| Variable | Descripción |
+|----------|-------------|
+| `APP_KEY` | Clave de cifrado (`php artisan key:generate --show`) |
+| `APP_ENV` | `production` |
+| `APP_DEBUG` | `false` |
+| `DB_CONNECTION` | `pgsql` |
+| `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | Credenciales PostgreSQL |
+
+---
+
 ## 📖 Documentación Técnica (Doc-as-Code)
 
 La documentación de clases (PHPDoc) se genera automáticamente con **phpDocumentor**:

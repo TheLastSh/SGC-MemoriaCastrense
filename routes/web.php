@@ -4,11 +4,15 @@ use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ForoController;
+use App\Http\Controllers\HealthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\VerificacionController;
 use Illuminate\Support\Facades\Route;
+
+// Health check (público, sin CSRF ni middleware)
+Route::get('/health', [HealthController::class, 'index']);
 
 // Públicas (sin parámetros primero)
 Route::get('/', [HomeController::class, 'index'])->name('home');
