@@ -5,7 +5,7 @@
     <div class="max-w-2xl mx-auto">
         <h1 class="text-heading text-navy-900 mb-8">Subir a la Biblioteca</h1>
 
-        <form action="{{ route('media.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-8 card-accent-teal">
+        <form action="{{ route('media.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6 md:p-8 card-accent-teal">
             @csrf
 
             <div>

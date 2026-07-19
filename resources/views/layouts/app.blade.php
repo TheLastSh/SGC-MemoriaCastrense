@@ -19,7 +19,7 @@
 </head>
 <body class="bg-parchment-50 text-slate-800 font-body antialiased flex flex-col min-h-screen">
 
-    <nav class="sticky top-0 z-50 transition-all duration-300">
+    <nav class="sticky top-0 z-50 transition-all duration-300" x-data="{ mobileOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
@@ -31,7 +31,15 @@
                         </div>
                     </a>
                 </div>
-                <div class="flex items-center space-x-4">
+
+                <!-- Hamburger button (mobile) -->
+                <button @click="mobileOpen = !mobileOpen" class="md:hidden text-gray-300 hover:text-white p-2" aria-label="Abrir menú">
+                    <svg x-show="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <svg x-show="mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+                <!-- Desktop nav -->
+                <div class="hidden md:flex items-center space-x-4">
                     <a href="{{ route('home') }}" class="text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Inicio</a>
                     <a href="{{ route('articulos.index') }}" class="text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Artículos</a>
                     <a href="{{ route('media.index') }}" class="text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Biblioteca</a>
@@ -74,6 +82,50 @@
                         </div>
                     @endauth
                 </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div x-show="mobileOpen" x-cloak class="md:hidden bg-navy-900/95 backdrop-blur-sm border-t border-navy-700/50">
+            <div class="px-4 py-4 space-y-2">
+                <a href="{{ route('home') }}" class="block text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Inicio</a>
+                <a href="{{ route('articulos.index') }}" class="block text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Artículos</a>
+                <a href="{{ route('media.index') }}" class="block text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Biblioteca</a>
+                <a href="{{ route('foro.index') }}" class="block text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Foro</a>
+
+                @auth
+                    <hr class="border-navy-700/50 my-2">
+                    @if(Auth::user()->isPublicador())
+                        <a href="{{ route('articulos.create') }}" class="block bg-gold-600/90 hover:bg-gold-500 text-navy-950 px-3 py-2 rounded-md text-sm font-bold text-center transition-colors">
+                            + Nuevo Artículo
+                        </a>
+                    @endif
+                    <div class="flex items-center gap-3 px-3 py-2">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-white truncate">{{ Auth::user()->name }}</p>
+                            <p class="text-xs text-gold-500 font-bold uppercase tracking-wider truncate">
+                                @if(Auth::user()->tipo_verificado)
+                                    {{ Auth::user()->tipo_verificado }}
+                                @else
+                                    {{ Auth::user()->role }}
+                                @endif
+                            </p>
+                        </div>
+                        <a href="{{ route('perfil.show') }}" class="text-gray-400 hover:text-gold-500 transition-colors" title="Mi Perfil">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="text-gray-400 hover:text-red-400 transition-colors" title="Cerrar Sesión">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <hr class="border-navy-700/50 my-2">
+                    <a href="{{ route('login') }}" class="block text-gray-300 hover:text-white hover:bg-navy-800/50 px-3 py-2 rounded-md text-sm font-medium transition-colors">Iniciar Sesión</a>
+                    <a href="{{ route('register') }}" class="block bg-navy-800/50 border border-gold-600/30 hover:border-gold-500/50 text-gold-500 px-3 py-2 rounded-md text-sm font-bold text-center transition-colors">Crear Cuenta</a>
+                @endauth
             </div>
         </div>
     </nav>

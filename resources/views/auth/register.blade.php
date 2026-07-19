@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-lg mx-auto mt-12 mb-16">
-    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-10 card-accent-teal">
+    <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6 md:p-10 card-accent-teal">
         <div class="text-center mb-10">
             <img src="{{ asset('img/logo.png') }}" alt="" class="w-14 h-14 mx-auto mb-4">
             <h2 class="text-3xl font-display font-bold text-navy-900">Crear una Cuenta</h2>

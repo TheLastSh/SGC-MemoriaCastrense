@@ -7,7 +7,7 @@
     <div class="space-y-4">
         @forelse($solicitudes as $solicitud)
             <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6">
-                <div class="flex justify-between items-start">
+                <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div>
                         <h2 class="font-semibold text-navy-900 text-lg">{{ $solicitud->usuario->name }}</h2>
                         <p class="text-sm text-gray-500">{{ $solicitud->usuario->email }}</p>
@@ -16,15 +16,17 @@
                             <span class="text-xs text-gray-400">Solicitado {{ $solicitud->created_at->diffForHumans() }}</span>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <form action="{{ route('verificacion.aprobar', $solicitud) }}" method="POST">
+                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <form action="{{ route('verificacion.aprobar', $solicitud) }}" method="POST" class="w-full sm:w-auto">
                             @csrf
-                            <button type="submit" class="bg-green-50/80 hover:bg-green-100 active:scale-[0.97] text-green-600 px-4 py-2 rounded-md text-sm font-medium transition-all">Aprobar</button>
+                            <button type="submit" class="w-full sm:w-auto bg-green-50/80 hover:bg-green-100 active:scale-[0.97] text-green-600 px-4 py-2 rounded-md text-sm font-medium transition-all">Aprobar</button>
                         </form>
-                        <form action="{{ route('verificacion.rechazar', $solicitud) }}" method="POST" onsubmit="return confirm('¿Rechazar esta solicitud?')">
+                        <form action="{{ route('verificacion.rechazar', $solicitud) }}" method="POST" onsubmit="return confirm('¿Rechazar esta solicitud?')" class="w-full sm:w-auto">
                             @csrf
-                            <input type="text" name="motivo" placeholder="Motivo del rechazo" required class="border border-parchment-200/50 bg-white/80 rounded px-2 py-1 text-sm">
-                            <button type="submit" class="bg-red-50/80 hover:bg-red-100 active:scale-[0.97] text-red-600 px-4 py-2 rounded-md text-sm font-medium transition-all">Rechazar</button>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input type="text" name="motivo" placeholder="Motivo del rechazo" required class="w-full sm:w-auto border border-parchment-200/50 bg-white/80 rounded px-2 py-1 text-sm">
+                                <button type="submit" class="w-full sm:w-auto bg-red-50/80 hover:bg-red-100 active:scale-[0.97] text-red-600 px-4 py-2 rounded-md text-sm font-medium transition-all">Rechazar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
