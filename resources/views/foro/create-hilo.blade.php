@@ -6,7 +6,7 @@
         <a href="{{ route('foro.categoria', $categoria) }}" class="text-sm text-gray-500 hover:text-gold-600 mb-4 inline-block">← {{ $categoria->nombre }}</a>
         <h1 class="text-heading text-navy-900 mb-8">Nuevo Hilo</h1>
 
-        <form action="{{ route('foro.create-hilo', $categoria) }}" method="POST" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-8 card-accent-gold">
+        <form action="{{ route('foro.create-hilo', $categoria) }}" method="POST" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6 md:p-8 card-accent-gold">
             @csrf
 
             <div>

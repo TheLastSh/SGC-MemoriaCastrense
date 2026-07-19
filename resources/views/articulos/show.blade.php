@@ -28,7 +28,7 @@
 
         {{-- Portada --}}
         @if($articulo->portada_url)
-            <img src="{{ $articulo->portada_url }}" alt="{{ $articulo->titulo }}" class="w-full h-80 object-cover rounded-xl mb-8 shadow-md">
+            <img src="{{ $articulo->portada_url }}" alt="{{ $articulo->titulo }}" class="w-full h-48 sm:h-64 md:h-80 object-cover rounded-xl mb-8 shadow-md">
         @endif
 
         {{-- Extracto --}}

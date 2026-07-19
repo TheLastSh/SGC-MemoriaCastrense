@@ -23,7 +23,7 @@
                 @if($user->biografia)
                     <p class="text-gray-600 mt-2">{{ $user->biografia }}</p>
                 @endif
-                <div class="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                <div class="flex items-center gap-4 mt-3 text-sm text-gray-500 flex-wrap">
                     <span>Miembro desde {{ $user->created_at->format('M Y') }}</span>
                     <span>•</span>
                     @if($user->isVerificado())
@@ -40,7 +40,7 @@
 
     {{-- Tabs --}}
     <div class="border-b border-parchment-200/50 mb-8" data-reveal>
-        <nav class="flex gap-6 -mb-px">
+        <nav class="flex gap-6 -mb-px overflow-x-auto pb-1">
             @if($user->isVerificado())
                 <button @click="tab = 'articulos'" :class="{ 'border-gold-600 text-gold-600': tab === 'articulos', 'border-transparent text-gray-500 hover:text-gray-700': tab !== 'articulos' }" class="pb-3 border-b-2 text-sm font-semibold transition-colors flex items-center gap-2">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>

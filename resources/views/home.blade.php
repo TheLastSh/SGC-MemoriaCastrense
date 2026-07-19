@@ -17,8 +17,8 @@
                 Archivo Histórico Militar<br>
                 <span class="text-gradient-gold">de La Vela de Coro</span>
             </h1>
-            <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto" data-reveal>Preservación, catalogación y divulgación de la historia militar del Estado Falcón, Venezuela. Un espacio abierto a historiadores, cultores y cronistas.</p>
-            <div class="flex justify-center gap-8 text-center" data-reveal>
+            <p class="text-gray-300 text-base sm:text-lg mb-8 max-w-2xl mx-auto" data-reveal>Preservación, catalogación y divulgación de la historia militar del Estado Falcón, Venezuela. Un espacio abierto a historiadores, cultores y cronistas.</p>
+            <div class="flex justify-center gap-4 sm:gap-8 text-center flex-wrap" data-reveal>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl px-8 py-5 border border-white/10 hover:bg-white/15 transition-colors min-w-[140px]">
                     <svg class="w-6 h-6 text-gold-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                     <p class="text-3xl font-bold text-gold-500" data-counter="{{ $totalArticulos }}">0</p>

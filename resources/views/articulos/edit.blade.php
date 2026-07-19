@@ -5,7 +5,7 @@
     <div class="max-w-4xl mx-auto" x-data="articuloForm()" @click.window="handleGlobalClick($event)">
         <h1 class="text-heading text-navy-900 mb-8">Editar Artículo</h1>
 
-        <form action="{{ route('articulos.update', $articulo) }}" method="POST" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-8 card-accent-gold" x-ref="form">
+        <form action="{{ route('articulos.update', $articulo) }}" method="POST" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6 md:p-8 card-accent-gold" x-ref="form">
             @csrf @method('PUT')
             <input type="hidden" name="redirect_to" x-model="redirectTo">
 
