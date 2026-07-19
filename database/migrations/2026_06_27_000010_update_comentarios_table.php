@@ -23,8 +23,6 @@ return new class extends Migration
             )
         ');
 
-        DB::statement('INSERT INTO comentarios_temp (id, user_id, articulo_id, contenido, created_at, updated_at) SELECT id, user_id, registro_id, contenido, created_at, updated_at FROM comentarios');
-
         Schema::dropIfExists('comentarios');
 
         DB::statement('ALTER TABLE comentarios_temp RENAME TO comentarios');
@@ -45,8 +43,6 @@ return new class extends Migration
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )
         ');
-
-        DB::statement('INSERT INTO comentarios_temp (id, user_id, registro_id, contenido, created_at, updated_at) SELECT id, user_id, articulo_id, contenido, created_at, updated_at FROM comentarios');
 
         Schema::dropIfExists('comentarios');
 
