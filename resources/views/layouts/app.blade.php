@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="D6e0mTGWeJ9VognzUNGkc75smfLBHhJvYoUd4zGT4GI">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Archivo Histórico Militar de La Vela de Coro — Preservación y difusión de la historia militar venezolana.">
+    <meta name="description" content="Archivo Histórico Militar de La Vela de Coro — Preservación y difusión de la memoria castrense de Venezuela.">
     <meta property="og:title" content="La Vela de Coro — Archivo Histórico Militar">
-    <meta property="og:description" content="Plataforma de preservación y difusión de la historia militar de La Vela de Coro, estado Falcón, Venezuela.">
+    <meta property="og:description" content="Plataforma de preservación y difusión de la memoria castrense de La Vela de Coro, estado Falcón, Venezuela.">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <title>@yield('title', 'La Vela de Coro — Archivo Histórico Militar')</title>
@@ -98,7 +99,7 @@
                 <img src="{{ asset('img/logo.png') }}" alt="" class="h-8 w-8 opacity-80">
                 <div>
                     <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} Archivo Histórico Militar de La Vela de Coro.</p>
-                    <p class="text-gray-500 text-xs">Preservación y difusión de la historia militar del Estado Falcón, Venezuela.</p>
+                    <p class="text-gray-500 text-xs">Preservación y difusión de la memoria castrense del Estado Falcón, Venezuela.</p>
                 </div>
             </div>
         </div>
