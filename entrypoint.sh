@@ -3,10 +3,8 @@ set -e
 
 php artisan migrate --force
 php artisan storage:link
-php artisan optimize
 php artisan view:cache
-php artisan config:cache
-php artisan route:cache
+php artisan optimize
 
 nginx
 php-fpm
