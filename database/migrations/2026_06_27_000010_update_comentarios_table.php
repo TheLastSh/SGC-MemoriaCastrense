@@ -12,9 +12,9 @@ return new class extends Migration
 
         DB::statement('
             CREATE TABLE comentarios_temp (
-                id SERIAL PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                articulo_id INTEGER NOT NULL,
+                id BIGSERIAL PRIMARY KEY,
+                user_id BIGINT NOT NULL,
+                articulo_id BIGINT NOT NULL,
                 contenido TEXT NOT NULL,
                 created_at TIMESTAMP,
                 updated_at TIMESTAMP,
@@ -36,9 +36,9 @@ return new class extends Migration
 
         DB::statement('
             CREATE TABLE comentarios_temp (
-                id SERIAL PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                registro_id TEXT NOT NULL,
+                id BIGSERIAL PRIMARY KEY,
+                user_id BIGINT NOT NULL,
+                registro_id UUID NOT NULL,
                 contenido TEXT NOT NULL,
                 created_at TIMESTAMP,
                 updated_at TIMESTAMP,
