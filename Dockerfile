@@ -10,7 +10,6 @@ RUN npm run build
 FROM composer:2 AS composer-build
 WORKDIR /app
 COPY composer.json composer.lock ./
-COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Etapa 3: Imagen final
