@@ -6,7 +6,7 @@
         <h1 class="text-heading text-navy-900 mb-4">Solicitar Verificación</h1>
         <p class="text-gray-500 mb-8">Si eres historiador, cultor o cronista con conocimiento sobre la historia militar de La Vela de Coro, solicita tu verificación para poder publicar artículos y subir archivos a la biblioteca.</p>
 
-        <form action="{{ route('verificacion.solicitar') }}" method="POST" enctype="multipart/form-data" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-8 card-accent-teal">
+        <form action="{{ route('verificacion.solicitar') }}" method="POST" enctype="multipart/form-data" class="space-y-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-parchment-100/50 p-6 md:p-8 card-accent-teal">
             @csrf
 
             <div>

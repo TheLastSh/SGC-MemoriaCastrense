@@ -31,12 +31,12 @@
                 @endif
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 text-sm">
-                    <div><span class="text-gray-400">Tipo</span><p class="font-medium">{{ $media->mime_type }}</p></div>
-                    <div><span class="text-gray-400">Peso</span><p class="font-medium">{{ round($media->peso_kb / 1024, 2) }} MB</p></div>
-                    @if($media->ancho)<div><span class="text-gray-400">Dimensiones</span><p class="font-medium">{{ $media->ancho }} × {{ $media->alto }} px</p></div>@endif
-                    <div><span class="text-gray-400">Subido por</span><p class="font-medium">{{ $media->subidor->name }}</p></div>
-                    <div><span class="text-gray-400">Colección</span><p class="font-medium capitalize">{{ $media->coleccion }}</p></div>
-                    <div><span class="text-gray-400">Fecha</span><p class="font-medium">{{ $media->created_at->format('d/m/Y') }}</p></div>
+                    <div class="min-w-0"><span class="text-gray-400">Tipo</span><p class="font-medium truncate">{{ $media->mime_type }}</p></div>
+                    <div class="min-w-0"><span class="text-gray-400">Peso</span><p class="font-medium truncate">{{ round($media->peso_kb / 1024, 2) }} MB</p></div>
+                    @if($media->ancho)<div class="min-w-0"><span class="text-gray-400">Dimensiones</span><p class="font-medium truncate">{{ $media->ancho }} × {{ $media->alto }} px</p></div>@endif
+                    <div class="min-w-0"><span class="text-gray-400">Subido por</span><p class="font-medium truncate">{{ $media->subidor->name }}</p></div>
+                    <div class="min-w-0"><span class="text-gray-400">Colección</span><p class="font-medium truncate capitalize">{{ $media->coleccion }}</p></div>
+                    <div class="min-w-0"><span class="text-gray-400">Fecha</span><p class="font-medium truncate">{{ $media->created_at->format('d/m/Y') }}</p></div>
                 </div>
 
                 @auth
