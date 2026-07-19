@@ -17,6 +17,9 @@ echo "APP_KEY is set"
 php artisan view:cache
 php artisan event:cache
 
+# Seed admin user if ADMIN_PASSWORD env var is set
+php artisan db:seed --class=Database\\\\Seeders\\\\AdminUserSeeder --force 2>&1 || true
+
 # Test Laravel boot (will print fatal errors to stdout)
 php artisan about --quiet 2>&1 || echo "Laravel boot test: FAILED"
 
