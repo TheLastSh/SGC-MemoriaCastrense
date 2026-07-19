@@ -1,0 +1,14 @@
+.git
+node_modules
+.env
+.env.*
+!.env.example
+/vendor
+/public/build
+/public/storage
+/storage/*.key
+.idea
+.vscode
+.fleet
+docs
+tests

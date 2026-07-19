@@ -16,9 +16,9 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Etapa 3: Imagen final
 FROM php:8.2-fpm-alpine AS production
 
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
+RUN apk add --no-cache postgresql-dev nginx
 
-RUN apk add --no-cache nginx
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 COPY docker/php.ini /usr/local/etc/php/conf.d/overrides.ini

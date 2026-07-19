@@ -270,7 +270,7 @@ El sistema se despliega automáticamente en **[Render](https://render.com)** ví
 
 | Recurso | URL |
 |---------|-----|
-| Producción | *pendiente — se asigna tras el primer deploy* |
+| Producción | [sgc-memoriacastrense.onrender.com](https://sgc-memoriacastrense.onrender.com) |
 | Health Check | `/health` |
 | Repositorio | [SGC-MemoriaCastrense](https://github.com/TheLastSh/SGC-MemoriaCastrense) |
 
