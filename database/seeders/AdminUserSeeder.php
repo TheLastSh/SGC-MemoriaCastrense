@@ -13,7 +13,7 @@ class AdminUserSeeder extends Seeder
         $email = env('ADMIN_EMAIL', 'admin@memoriacastrense.gob.ve');
         $password = env('ADMIN_PASSWORD');
 
-        if (!$password) {
+        if (! $password) {
             return;
         }
 
