@@ -12,7 +12,7 @@ return new class extends Migration
 
         DB::statement('
             CREATE TABLE comentarios_temp (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 user_id INTEGER NOT NULL,
                 articulo_id INTEGER NOT NULL,
                 contenido TEXT NOT NULL,
@@ -36,7 +36,7 @@ return new class extends Migration
 
         DB::statement('
             CREATE TABLE comentarios_temp (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 user_id INTEGER NOT NULL,
                 registro_id TEXT NOT NULL,
                 contenido TEXT NOT NULL,
