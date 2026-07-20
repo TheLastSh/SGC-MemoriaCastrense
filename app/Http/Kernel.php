@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CorrelationIdMiddleware;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
@@ -54,6 +55,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            CorrelationIdMiddleware::class,
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
             StartSession::class,
