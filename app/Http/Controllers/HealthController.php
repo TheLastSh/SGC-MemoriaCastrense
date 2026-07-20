@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HealthController extends Controller
@@ -22,11 +23,9 @@ class HealthController extends Controller
         }
 
         $storageStatus = 'error';
-        $diskFreeMb = null;
         $writable = false;
 
         try {
-            $diskFreeMb = round(disk_free_space(storage_path()) / 1048576);
             $testFile = storage_path('app/public/health-test.txt');
             file_put_contents($testFile, 'ok');
             unlink($testFile);
@@ -36,15 +35,10 @@ class HealthController extends Controller
             $storageStatus = 'error';
         }
 
-        $memoryUsage = round(memory_get_usage(true) / 1048576, 1);
-        $memoryLimit = ini_get('memory_limit');
-
-        return response()->json([
+        $data = [
             'status' => ($dbStatus === 'ok' && $storageStatus === 'ok') ? 'ok' : 'degraded',
             'application' => 'SGC Memoria Castrense',
-            'version' => '1.0.0',
             'timestamp' => now()->toIso8601String(),
-            'php_version' => phpversion(),
             'checks' => [
                 'database' => [
                     'status' => $dbStatus,
@@ -52,14 +46,19 @@ class HealthController extends Controller
                 ],
                 'storage' => [
                     'status' => $storageStatus,
-                    'disk_free_mb' => $diskFreeMb,
                     'writable' => $writable,
                 ],
-                'memory' => [
-                    'usage_mb' => $memoryUsage,
-                    'limit' => $memoryLimit,
-                ],
             ],
-        ]);
+        ];
+
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $data['php_version'] = phpversion();
+            $data['checks']['memory'] = [
+                'usage_mb' => round(memory_get_usage(true) / 1048576, 1),
+                'limit' => ini_get('memory_limit'),
+            ];
+        }
+
+        return response()->json($data);
     }
 }

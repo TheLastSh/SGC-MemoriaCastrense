@@ -63,7 +63,7 @@ class MediaController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'archivo' => 'required|file|max:25600',
+            'archivo' => 'required|file|mimes:jpg,jpeg,png,gif,webp,mp4,pdf,doc,docx|max:25600',
             'coleccion' => 'required|in:imagen,video,documento',
             'alt_text' => 'nullable|string|max:255',
             'descripcion' => 'nullable|string|max:1000',

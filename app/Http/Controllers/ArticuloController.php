@@ -127,7 +127,9 @@ class ArticuloController extends Controller
                 ? 'Artículo publicado correctamente.'
                 : 'Artículo guardado como borrador.';
 
-            $redirect = $request->redirect_to ?? route('articulos.index');
+            $redirect = $request->redirect_to && str_starts_with($request->redirect_to, '/')
+                ? $request->redirect_to
+                : route('articulos.index');
 
             return redirect($redirect)->with('success', $msg);
         } catch (\Exception $e) {
@@ -200,7 +202,9 @@ class ArticuloController extends Controller
 
         $articulo->tags()->sync($request->tags ?? []);
 
-        $redirect = $request->redirect_to ?? route('articulos.show', $articulo);
+        $redirect = $request->redirect_to && str_starts_with($request->redirect_to, '/')
+            ? $request->redirect_to
+            : route('articulos.show', $articulo);
 
         return redirect($redirect)
             ->with('success', 'Artículo actualizado correctamente.');
