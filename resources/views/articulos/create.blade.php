@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Nuevo Artículo — La Vela de Coro')
+@section('title', 'Nuevo Artículo - SGC Memoria Castrense')
 
 @section('content')
     <div class="max-w-4xl mx-auto" x-data="articuloForm()" @click.window="handleGlobalClick($event)">

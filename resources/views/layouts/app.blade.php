@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="D6e0mTGWeJ9VognzUNGkc75smfLBHhJvYoUd4zGT4GI">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Archivo Histórico Militar de La Vela de Coro — Preservación y difusión de la memoria castrense de Venezuela.">
-    <meta property="og:title" content="La Vela de Coro — Archivo Histórico Militar">
-    <meta property="og:description" content="Plataforma de preservación y difusión de la memoria castrense de La Vela de Coro, estado Falcón, Venezuela.">
+    <meta name="description" content="SGC Memoria Castrense — Sistema Gestor de Contenido para la preservación de la historia militar de La Vela de Coro, estado Falcón, Venezuela.">
+    <meta property="og:title" content="SGC Memoria Castrense">
+    <meta property="og:description" content="Sistema Gestor de Contenido para la preservación y difusión de la memoria castrense de La Vela de Coro, estado Falcón, Venezuela.">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    <title>@yield('title', 'La Vela de Coro — Archivo Histórico Militar')</title>
+    <title>@yield('title', 'SGC Memoria Castrense')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -24,10 +24,10 @@
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 group">
-                        <img src="{{ asset('img/logo.png') }}" alt="La Vela de Coro" class="h-9 w-9 group-hover:opacity-80 transition-opacity">
+                        <img src="{{ asset('img/logo.png') }}" alt="SGC Memoria Castrense" class="h-9 w-9 group-hover:opacity-80 transition-opacity">
                         <div class="flex flex-col">
-                            <span class="text-white font-display font-bold text-xl leading-tight">La Vela de Coro</span>
-                            <span class="text-gold-400 text-xs tracking-wider uppercase font-semibold">Archivo Histórico Militar</span>
+                            <span class="text-white font-display font-bold text-xl leading-tight">SGC Memoria Castrense</span>
+                            <span class="text-gold-400 text-xs tracking-wider uppercase font-semibold">La Vela de Coro</span>
                         </div>
                     </a>
                 </div>
@@ -150,8 +150,8 @@
             <div class="flex items-center gap-3">
                 <img src="{{ asset('img/logo.png') }}" alt="" class="h-8 w-8 opacity-80">
                 <div>
-                    <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} Archivo Histórico Militar de La Vela de Coro.</p>
-                    <p class="text-gray-500 text-xs">Preservación y difusión de la memoria castrense del Estado Falcón, Venezuela.</p>
+                    <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} SGC Memoria Castrense. Sistema Gestor de Contenido.</p>
+                    <p class="text-gray-500 text-xs">Preservación y difusión de la historia castrense del Estado Falcón, Venezuela.</p>
                 </div>
             </div>
         </div>

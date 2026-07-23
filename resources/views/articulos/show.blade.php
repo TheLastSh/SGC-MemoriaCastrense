@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $articulo->titulo . ' — La Vela de Coro')
+@section('title', $articulo->titulo . ' - SGC Memoria Castrense')
 
 @section('content')
     <article class="max-w-4xl mx-auto">

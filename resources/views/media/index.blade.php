@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Biblioteca de Medios — La Vela de Coro')
+@section('title', 'Biblioteca de Medios - SGC Memoria Castrense')
 
 @section('content')
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8" data-reveal>
