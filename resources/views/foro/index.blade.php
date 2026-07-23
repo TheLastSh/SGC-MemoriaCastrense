@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Foro de Discusión — La Vela de Coro')
+@section('title', 'Foro de Discusión - SGC Memoria Castrense')
 
 @section('content')
     <div class="flex justify-between items-center mb-8" data-reveal>

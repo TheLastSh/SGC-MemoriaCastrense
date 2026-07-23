@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Mi Perfil — La Vela de Coro')
+@section('title', 'Mi Perfil - SGC Memoria Castrense')
 
 @section('content')
 <div class="max-w-5xl mx-auto" x-data="{ tab: '{{ $user->isVerificado() ? 'articulos' : 'favoritos' }}' }">

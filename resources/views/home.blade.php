@@ -14,8 +14,8 @@
                 <img src="{{ asset('img/logo.png') }}" alt="" class="w-14 h-14 animate-float">
             </div>
             <h1 class="text-display text-white mb-4" data-reveal>
-                Archivo Histórico Militar<br>
-                <span class="text-gradient-gold">de La Vela de Coro</span>
+                SGC Memoria Castrense<br>
+                <span class="text-gradient-gold">La Vela de Coro</span>
             </h1>
             <p class="text-gray-300 text-base sm:text-lg mb-8 max-w-2xl mx-auto" data-reveal>Preservación, catalogación y divulgación de la historia militar del Estado Falcón, Venezuela. Un espacio abierto a historiadores, cultores y cronistas.</p>
             <div class="flex justify-center gap-4 sm:gap-8 text-center flex-wrap" data-reveal>

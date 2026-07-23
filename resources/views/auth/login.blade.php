@@ -6,7 +6,7 @@
         <div class="text-center mb-10">
             <img src="{{ asset('img/logo.png') }}" alt="" class="w-14 h-14 mx-auto mb-4">
             <h2 class="text-3xl font-display font-bold text-navy-900">Iniciar Sesión</h2>
-            <p class="text-gray-500 mt-2">Accede al Archivo Histórico Militar de La Vela de Coro</p>
+            <p class="text-gray-500 mt-2">Accede a SGC Memoria Castrense</p>
         </div>
 
         <form method="POST" action="{{ route('login') }}" class="space-y-6">
